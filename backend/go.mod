@@ -1,0 +1,1 @@
+module github.com/cookpad-internship-2020-summer-pbl/backend
