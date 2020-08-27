@@ -1,7 +1,7 @@
 <template>
   <v-layout column justify-center align-center>
     <v-flex xs12 sm8 md6>
-      <v-card class="mb-3" v-for="post in posts" :key="post.id">
+      <v-card v-bind:ripple="false" class="mb-3" v-for="post in posts" :key="post.id" @click="showDetail(`/post/${post.id}`)">
         <v-img
           class="white--text align-end"
           height="200px"
@@ -21,17 +21,17 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn icon>
+          <v-btn icon @click.stop="like(post.id)">
             <v-icon>mdi-heart</v-icon>
           </v-btn>
           {{post.liked}}
 
-          <v-btn icon>
+          <v-btn icon @click.stop="cook(post.id)">
             <v-icon>mdi-silverware-fork-knife</v-icon>
           </v-btn>
           {{post.cooked}}
 
-          <v-btn icon>
+          <v-btn icon @click.stop="comment(post.id)">
             <v-icon>mdi-comment</v-icon>
           </v-btn>
           {{post.comments}}
@@ -59,9 +59,10 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue'
 import { Post, seed } from "~/model/post";
 
-export default {
+export default Vue.extend({
   data() {
     return ({
       posts: seed,
@@ -71,8 +72,23 @@ export default {
   },
   created() {
     this.$nuxt.$emit('title', "タイムライン");
+    this.$nuxt.$emit("back", null);
+  },
+  methods: {
+    showDetail(page: string) {
+      this.$nuxt.$router.push(page);
+    },
+    like(id: string) {
+
+    },
+    comment(id: string) {
+
+    },
+    cook(id: string) {
+
+    },
   }
-}
+})
 </script>
 
 <style scoped>
