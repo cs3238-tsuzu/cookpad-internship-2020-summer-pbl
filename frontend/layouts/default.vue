@@ -21,20 +21,21 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { auth, login } from '~/firebase';
 
 export default Vue.extend({
   data() {
     return {
       title: "タイムライン",
-      prevPage: null,
+      prevPage: false,
     } as {
       title: string;
-      prevPage: string | null;
+      prevPage: Boolean;
     };
   },
-  created() {
+  async created() {
     this.$nuxt.$on('title', this.setHeader);
-    this.$nuxt.$on('back', this.setPrev);;
+    this.$nuxt.$on('back', this.setPrev);
   },
   methods: {
     setHeader(title: string) {
@@ -46,7 +47,7 @@ export default Vue.extend({
     },
     goBack() {
       if (this.prevPage)
-        this.$nuxt.$router.push(this.prevPage);
+        this.$router.back();
     }
   }
 })

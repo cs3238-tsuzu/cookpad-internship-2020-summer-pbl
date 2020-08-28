@@ -71,13 +71,15 @@ export default Vue.extend({
       liked: {postID: string}[];
     };
   },
-  created() {
-    this.$nuxt.$emit('title', "タイムライン");
-    this.$nuxt.$emit("back", null);
+  async created() {
+    this.$nuxt.$emit('title', "フィルター中...");
+    this.$nuxt.$emit("back", true);
+
+    this.$nuxt.$emit('title', (await PostClient.get(this.$nuxt.$route.params.id)).title);
   },
   firestore() {
     return {
-      posts: PostClient.list(),
+      posts: PostClient.filter(this.$nuxt.$route.params.id),
       liked: LikeClient.list(),
     }
   },

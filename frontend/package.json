@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "nuxt-ts",
+    "dev": "nuxt-ts --hostname=0.0.0.0",
     "build": "nuxt-ts build",
     "start": "nuxt-ts start",
     "generate": "nuxt-ts generate",
@@ -14,7 +14,11 @@
   },
   "dependencies": {
     "@nuxt/typescript-runtime": "^1.0.0",
-    "nuxt": "^2.14.0"
+    "@types/uuid": "^8.3.0",
+    "firebase": "^7.19.0",
+    "nuxt": "^2.14.0",
+    "uuid": "^8.3.0",
+    "vuefire": "^2.2.4"
   },
   "devDependencies": {
     "@nuxt/types": "^2.14.0",
