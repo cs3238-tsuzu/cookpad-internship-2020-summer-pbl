@@ -112,7 +112,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Post, seed, PostClient } from "~/model/post";
-import { Like, LikeClient } from "~/model/like";
+import { LikeClient } from "~/model/like";
 import { Comment, seed as commentSeed, CommentClient } from "~/model/comment";
 import Paragraph from "~/components/Paragraph.vue";
 import CommentDialog from "~/components/CommentDialog.vue";
@@ -136,11 +136,11 @@ export default Vue.extend({
       post: Post | null;
       comments: Comment[];
       dialog: Boolean;
-      liked: Like[];
+      liked: {postID: string}[];
       linked: Post | null;
     }
   },
-  async created() {
+  async mounted() {
     const post = await PostClient.get(this.$nuxt.$route.params.id);
     this.post = post;
 
@@ -182,14 +182,14 @@ export default Vue.extend({
         await CommentClient.upload({
           comment,
           postID: this.$nuxt.$route.params.id,
-        })
+        }, this.post!)
       }
     },
     like() {
-      LikeClient.upload(this.$nuxt.$route.params.id, this.liked.length ? "remove" : "add");
+      LikeClient.upload(this.post!, this.liked.length ? "remove" : "add");
     },
     cook() {
-      this.$nuxt.$router.push(`/list/${this.post.linked}`);
+      this.$nuxt.$router.push(`/list/${this.post?.linked}`);
     },
     newLinked() {
       this.$nuxt.$router.push(`/new?linked=${this.post?.linked}`);
@@ -197,7 +197,7 @@ export default Vue.extend({
   },
   computed: {
     heartColor() {
-      return this.liked.length ? "pink" : undefined
+      return (this as any as {liked: {postID: string}[]}).liked.length ? "pink" : undefined
     }
   }
 })

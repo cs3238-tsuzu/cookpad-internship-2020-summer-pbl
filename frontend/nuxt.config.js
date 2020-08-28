@@ -83,4 +83,5 @@ export default {
   router: {
     middleware: "routing",
   },
+  typeCheck: false
 }

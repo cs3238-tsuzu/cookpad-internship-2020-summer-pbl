@@ -1,4 +1,6 @@
 import firebase, {auth, firestore} from "~/firebase";
+import { NotificationClient } from "./notification";
+import { Post } from "./post";
 
 export interface Comment {
   id: string;
@@ -25,7 +27,7 @@ export const seed: Comment[] = [
 export type NewComment = Omit<Comment, "id" | "author" | "authorID" | "createdAt">;
 
 export const CommentClient = {
-  async upload(p: NewComment): Promise<Comment> {
+  async upload(p: NewComment, post: Post): Promise<Comment> {
     const comment: Comment = {
       ...p,
       id: "",
@@ -47,6 +49,15 @@ export const CommentClient = {
         "comments": firebase.firestore.FieldValue.increment(1),
       }
     )
+
+    if(post.authorID !== comment.authorID) {
+      NotificationClient.addBatch(batch, {
+        ...comment,
+        userID: post.authorID,
+        imageURL: post.imageURL,
+        text: `${comment.author}さんが「${post.title}」にコメントしました`
+      })
+    }
 
     await batch.commit();
 

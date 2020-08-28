@@ -88,7 +88,7 @@ export default Vue.extend({
       this.$nuxt.$router.push(page);
     },
     like(id: string) {
-      LikeClient.upload(id, this.likedMap.hasOwnProperty(id))
+      LikeClient.upload(this.postsMap[id], this.likedMap.hasOwnProperty(id) ? "remove" : "add")
     },
     cook(id: string) {
       this.$nuxt.$router.push(`/list/${id}`);

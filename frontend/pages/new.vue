@@ -11,7 +11,7 @@
         <v-toolbar-title v-else>関連投稿</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items>
-          <v-btn dark text @click="save">Save</v-btn>
+          <v-btn dark text @click="save" :disabled="uploading">Save</v-btn>
         </v-toolbar-items>
       </v-toolbar>
       <v-card-text class="ma-0 pt-0 pb-0 px-1">
@@ -65,7 +65,8 @@ export default Vue.extend({
       inputImage: null,
       titleError: null,
       imageError: null,
-      linked: `${this.$nuxt.$route.query.linked ?? ""}`
+      linked: `${this.$nuxt.$route.query.linked ?? ""}`,
+      uploading: false,
     } as {
       title: string;
       description: string;
@@ -73,6 +74,7 @@ export default Vue.extend({
       imageError: string | null;
       titleError: string | null;
       linked: string;
+      uploading: boolean;
     }
   },
   validate({ params: {id: string} }) {
@@ -97,6 +99,7 @@ export default Vue.extend({
       this.titleError = this.title === "" ? "レシピ名が空です" : null;
     },
     async save() {
+      this.uploading = true;
       this.titleChanged();
       this.imageChanged();
       if (this.imageError !== null || this.titleError !== null) {

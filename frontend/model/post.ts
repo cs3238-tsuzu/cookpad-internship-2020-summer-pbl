@@ -1,6 +1,7 @@
 import {auth, firestore} from "~/firebase";
 import firebase from "firebase";
 import { v4 as uuidv4 } from "uuid";
+import { NotificationClient } from "./notification";
 
 export interface Post {
   id: string;
@@ -50,6 +51,13 @@ export const PostClient = {
       batch.update(linkedRef, {
         "cooked": firebase.firestore.FieldValue.increment(1),
       });
+
+      NotificationClient.addBatch(batch, {
+          ...post,
+          userID: (await this.get(p.linked)).authorID,
+          postID: post.id,
+          text: `${post.author}さんも「${post.title}」を作成しています、確認してみましょう`
+      })
     }
 
     await batch.commit();
