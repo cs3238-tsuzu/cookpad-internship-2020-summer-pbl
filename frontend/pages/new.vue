@@ -29,7 +29,7 @@
               ></v-file-input>
             </v-col>
             <v-col cols="12">
-                <v-text-field label="レシピ名" :error="titleError" @change="titleChanged" required v-model="title"></v-text-field>
+                <v-text-field :disabled="linked.length !== 0" label="レシピ名" :error="titleError" @change="titleChanged" required v-model="title"></v-text-field>
             </v-col>
             <v-col cols="12" class="mt-0">
               <v-textarea class="pt-0" auto-grow label="説明" v-model="description" required></v-textarea>

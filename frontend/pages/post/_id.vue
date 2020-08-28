@@ -24,7 +24,7 @@
             <v-divider v-bind:vertical="true"></v-divider>
             <v-col md="4">
               <div align="center">
-                <v-btn large icon>
+                <v-btn @click="cook" large icon>
                   <v-icon>mdi-silverware-fork-knife</v-icon>
                 </v-btn>
                 <div style="display: inline" class="text-subtitle-1" v-if="linked">{{linked.cooked}}</div>
@@ -187,6 +187,9 @@ export default Vue.extend({
     },
     like() {
       LikeClient.upload(this.$nuxt.$route.params.id, this.liked.length ? "remove" : "add");
+    },
+    cook() {
+      this.$nuxt.$router.push(`/list/${this.post.linked}`);
     },
     newLinked() {
       this.$nuxt.$router.push(`/new?linked=${this.post?.linked}`);
